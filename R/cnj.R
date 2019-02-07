@@ -1,3 +1,4 @@
+
 #' @title Calculate digits for Brazilian lawsuit identification numbers
 #' 
 #' @description Returns the check digit of a lawsuit numbers in the format 
@@ -13,8 +14,6 @@
 #' @examples {
 #' calc_dig("001040620018260004", build = TRUE)
 #' calc_dig("001040620018260004", build = FALSE)
-#' 
-#' #will fail
 #' \dontrun{
 #' calc_dig("00104062001826000", build = TRUE)
 #' }
@@ -66,16 +65,59 @@ check_dig <- function(num) {
   num <- stringr::str_replace_all(num, "[.-]","")
   
   if(stringr::str_length(num) != 20){
-    stop("Complete docket numbers should have 20 numerical digits.")
+    warning("Complete docket numbers should have 20 numerical digits.")
+    return(FALSE)
   }
   
   num_no_dig <- stringr::str_c(substr(num,1L,7L),substr(num, 10L, 20L))
-
+  
   num_with_dig <- calc_dig(num_no_dig, build = TRUE)
   
   return(identical(num_with_dig, num))
 }
 
+#' @title Validate check digits for Brazilian lawsuits identification
+#' number on vectorial scale.
+#' 
+#' @description Verifies if a check digit is correct
+#' 
+#' @param num A vector containing strings with the complete lawsuit number
+#' 
+#' @return Whether or not the check digit is well calculated
+#'   
+#' @examples {
+#' check_dig_vet(c("0005268-75.2013.8.26.0100", "0004122-85.2010.6.16.0100"))
+#'
+#' }
+#' 
+#' @export
+check_dig_vet <- function(num){
+  
+  purrr::map_lgl(num,abjutils::check_dig)
+  
+}
+
+
+#' @title Validate Brazilian lawsuits identification number on vectorial scale.
+#' 
+#' @description Verifies if a brazilian lawsuit identification is a cnj number.
+#' 
+#' @param cnj A vector containing strings with the complete lawsuit number
+#' 
+#' @return Whether or not the check digit is well calculated
+#'   
+#' @export
+verify_cnj <- function(cnj){
+  
+  nprocesso2 <- dplyr::if_else(is.na(cnj), '',clean_cnj(cnj))
+  
+  resp<- dplyr::case_when(nprocesso2 == '' ~ 'vazio ou NA',
+                          stringr::str_length(clean_cnj(cnj))>20 ~ '> 20 digitos',
+                          !check_dig_vet(stringr::str_pad(dplyr::if_else(stringr::str_length(nprocesso2)>20,str_sub(nprocesso2,end = 20), nprocesso2),20,'left','0'))~ 'dv invalido ou nao-cnj',
+                          T~'valido')
+  return(resp) 
+  
+}
 
 #' @title Extract different parts from lawsuit ID
 #' 
@@ -113,7 +155,7 @@ extract_parts <- function(id, parts = "") {
   id <- id %>%
     clean_id() %>%
     purrr::modify_if(~stringr::str_length(.x) == 18, calc_dig, build = TRUE) %>%
-    purrr::flatten_chr()
+    unlist()
   
   # Extract parts for one ID
   get_parts <- function(id, parts) {
@@ -181,6 +223,32 @@ build_id <- function(id) {
 #' 
 #' @export
 separate_cnj <- function(data, col, ...) {
+  col <- rlang::enquo(col)
   tidyr::separate(
-    data, col, into = c("N", "D", "A", "J", "T", "O"), sep = "[\\-\\.]", ...)
+    data, rlang::UQ(col), into = c("N", "D", "A", "J", "T", "O"), sep = "[\\-\\.]", ...)
+}
+
+#' Regex pattern for finding lawsuit numbers
+#' 
+#' @export
+pattern_cnj <- function() {
+  glue::glue(
+    "[0-9]{{3,7}}-?", 
+    "[0-9]{{2}}\\.?",
+    "[0-9]{{4}}\\.?", 
+    "[0-9]{{1}}\\.?",
+    "[0-9]{{2}}\\.?", 
+    "[0-9]{{4}}"
+  ) %>% as.character()
+}
+
+#' @title Clean a cnj number.
+#' 
+#' @description Remove all non-numeric character from a string
+#' 
+#' @param x A string (cnj)
+#' 
+#' @export
+clean_cnj <- function(x) {
+  stringr::str_replace_all(x, '[^0-9]','')
 }

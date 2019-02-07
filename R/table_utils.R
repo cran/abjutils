@@ -1,28 +1,34 @@
-prettify_number <- function(d, number = T, percent = T,  ...){
-  
-  if(percent){
-    query <- '{fmt_p(x/sum(x))}'
-  } 
-  
-  if(number) {
-    query <- sprintf('{fmt(x)} (%s)', glue::glue(query))
+prettify_number <- function(d, number = T, percent = T, ...) {
+  if (percent) {
+    query <- "{fmt_p(x/sum(x))}"
   }
-  
-  d %>% 
-    dplyr::select(...) %>% 
-    dplyr::mutate_if(is.numeric, .funs = function(x){glue::glue(query)}) %>% 
+
+  if (number) {
+    query <- sprintf("{fmt(x)} (%s)", glue::glue(query))
+  }
+
+  d %>%
+    dplyr::select(...) %>%
+    dplyr::mutate_if(is.numeric, .funs = function(x) {
+      glue::glue(query)
+    }) %>%
     dplyr::as_data_frame()
 }
 
+# adapted from plyr package
 fmt <- function(x) {
-  format(x, big.mark = '.', small.mark = ',',
-         decimal.mark = ',',
-         scientific = FALSE, trim = TRUE)
+  format(x,
+    big.mark = ".", small.mark = ",",
+    decimal.mark = ",",
+    scientific = FALSE, trim = TRUE
+  )
 }
 
+# adapted from plyr package
 fmt_p <- function(x) {
   if (length(x) == 0) return(character())
-  x <- plyr::round_any(x, precision(x) / 100)
+  accuracy <- precision(x) / 100
+  x <- round(x / accuracy) * accuracy
   x <- fmt(x * 100)
   paste0(x, "%")
 }

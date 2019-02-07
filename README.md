@@ -1,5 +1,9 @@
-abjutils [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/abjur/abjutils?branch=master&svg=true)](https://ci.appveyor.com/project/abjur/abjutils/branch/master) [![Travis-CI Build Status](https://travis-ci.org/abjur/abjutils.svg?branch=master)](https://travis-ci.org/abjur/abjutils)
+abjutils
 ========
+
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/abjur/abjutils?branch=master&svg=true)](https://ci.appveyor.com/project/abjur/abjutils/branch/master)
+[![Travis-CI Build Status](https://travis-ci.org/abjur/abjutils.svg?branch=master)](https://travis-ci.org/abjur/abjutils)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/abjutils)](https://cran.r-project.org/package=abjutils)
 
 ## Overview
 
@@ -16,7 +20,7 @@ install.packages("abjutils")
 
 # To install GitHub (dev) version
 install.packages("devtools")
-devtools::install_github("courtsbr/esaj")
+devtools::install_github("abjur/abjutils")
 ```
 
 ## Usage
@@ -28,7 +32,7 @@ devtools::install_github("courtsbr/esaj")
 - `escape_unicode`: replaces accented characters by their unicode-escaped values
 (also an add-in)
 
-- `carefully`: a safe and protected vectorizer useful for things such as web scrapers
+- `pvec`: a safe and protected vectorizer useful for things such as web scrapers
 
 ## Citations
 
