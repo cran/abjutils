@@ -2,12 +2,20 @@ Type: Package
 Package: abjutils
 Title: Useful Tools for Jurimetrical Analysis Used by the Brazilian
         Jurimetrics Association
-Version: 0.3.0
-Date: 2020-08-11
+Version: 0.3.1
+Date: 2020-08-12
 Authors@R: 
-    person(family = "ABJ",
-           role = c("aut", "cre", "cph"),
-           email = "clente@abj.org.br")
+    c(person(given = "Caio",
+             family = "Lente",
+             role = c("aut", "cre"),
+             email = "clente@abj.org.br"),
+      person(given = "Julio",
+             family = "Trecenti",
+             role = "aut",
+             email = "julio.trecenti@gmail.com",
+             comment = c(ORCID = "0000-0002-1680-6389")),
+      person(given = "Associação Brasileira de Jurimetria",
+             role = c("cph", "fnd")))
 Description: The Brazilian Jurimetrics Association (ABJ in
     Portuguese, see <https://abj.org.br/> for more information) is
     a non-profit organization which aims to investigate and promote the
@@ -26,8 +34,10 @@ Encoding: UTF-8
 LazyData: TRUE
 RoxygenNote: 7.1.1
 NeedsCompilation: no
-Packaged: 2020-08-11 21:12:09 UTC; clente
-Author: ABJ [aut, cre, cph]
-Maintainer: ABJ <clente@abj.org.br>
+Packaged: 2020-08-12 18:00:54 UTC; clente
+Author: Caio Lente [aut, cre],
+  Julio Trecenti [aut] (<https://orcid.org/0000-0002-1680-6389>),
+  Associação Brasileira de Jurimetria [cph, fnd]
+Maintainer: Caio Lente <clente@abj.org.br>
 Repository: CRAN
-Date/Publication: 2020-08-12 11:20:07 UTC
+Date/Publication: 2020-08-12 22:50:05 UTC
