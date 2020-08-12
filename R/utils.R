@@ -2,7 +2,7 @@
 #' @title Convert Chrome's Query String Parameters to a list
 #'
 #' @description To use this function, simply copy the Query String
-#' Parameters returned by Chrome when analysing the network flow of
+#' Parameters returned by Chrome when analyzing the network flow of
 #' a web page. Paste these QSPs into an R string with double quotes
 #' (as you would to create any string) and pass it to
 #' `chrome_to_body()`; the function will print to the console a
@@ -104,26 +104,6 @@ lsos <- function(pos = 1, pattern, order.by = "Size",
   out
 }
 
-#' @title Add pipe template
-#'
-#' @description Adds pipe template to package documentation.
-#'
-#' @param pkg Package description (can be path or package name)
-#'
-#' @export
-use_pipe <- function(pkg = ".") {
-  pkg <- devtools::as.package(pkg)
-  devtools::use_package("magrittr", pkg = pkg)
-  txt_pipe <- readLines(system.file("pipe-op.R",
-    package = "abjutils"
-  ))
-  cat(txt_pipe,
-    file = paste0(pkg$path, "/R/utils.R"),
-    append = TRUE, sep = "\n"
-  )
-  devtools::document()
-}
-
 #' Mirror of scales:::precision()
 #'
 #' @param x See scales:::precision()
@@ -131,7 +111,7 @@ use_pipe <- function(pkg = ".") {
 #' @export
 precision <- function(x) {
   rng <- range(x, na.rm = TRUE)
-  span <- if (scales::zero_range(rng)) {
+  span <- if (zero_range(rng)) {
     abs(rng[1])
   } else {
     diff(rng)
@@ -142,7 +122,31 @@ precision <- function(x) {
   10^floor(log10(span))
 }
 
-#' Convert brazilian currency values (text) to numeric
+# Mirror of scales::zero_range
+zero_range <- function(x, tol = 1000 * .Machine$double.eps) {
+  if (length(x) == 1) {
+    return(TRUE)
+  }
+  if (length(x) != 2) {
+    stop("x must be length 1 or 2")
+  }
+  if (any(is.na(x))) {
+    return(NA)
+  }
+  if (x[1] == x[2]) {
+    return(TRUE)
+  }
+  if (all(is.infinite(x))) {
+    return(FALSE)
+  }
+  m <- min(abs(x))
+  if (m == 0) {
+    return(FALSE)
+  }
+  abs((x[1] - x[2]) / m) < tol
+}
+
+#' Convert Brazilian currency values (text) to numeric
 #'
 #' @param x A currency vector. Ex: c("R$ 10.000,00", "R$ 123,00")
 #'

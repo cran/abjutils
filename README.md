@@ -25,14 +25,13 @@ devtools::install_github("abjur/abjutils")
 
 ## Usage
 
-`abjutils` has many functions, but the most useful are listed below
+`abjutils` has many functions, but for regular users the most useful ones are
+listed below
 
 - `rm_accent`: removes diacritics from a string
 
 - `escape_unicode`: replaces accented characters by their unicode-escaped values
 (also an add-in)
-
-- `pvec`: a safe and protected vectorizer useful for things such as web scrapers
 
 ## Citations
 
@@ -41,7 +40,7 @@ To cite this package, use `citation("abjutils")`:
 ```
 To cite package ‘abjutils’ in publications use:
 
-  Julio Trecenti and Fernando Correa (2014). abjutils:
+  Associacao Brasileira de Jurimetria (2020). abjutils:
   Useful Tools for Jurimetrical Analysis Used by the
   Brazilian Jurimetrics Association. R package version
   0.0.1. https://github.com/abjur/abjutils
@@ -50,9 +49,9 @@ A BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {abjutils: Useful Tools for Jurimetrical Analysis Used by the Brazilian Jurimetrics Association},
-    author = {Julio Trecenti and Fernando Correa},
-    year = {2014},
-    note = {R package version 0.0.1},
+    author = {Associacao Brasileira de Jurimetria},
+    year = {2020},
+    note = {R package version 0.3.0},
     url = {https://github.com/abjur/abjutils},
   }
 ```
